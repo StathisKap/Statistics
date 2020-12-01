@@ -7,6 +7,8 @@
 
 #include <stdio.h>
 #include <math.h>
+#include <stdlib.h>
+
 void main(int argc, char *argv[])
 { //Take the name of the file passed and open it. Declare and initialise variables
     char *name = argv[1];
@@ -32,20 +34,31 @@ void main(int argc, char *argv[])
     variance = variance/(count-1);
         //Find the standard deviation using the square root of the variance.
     standard_deviation = sqrt(variance);
+    
+        //Reset Position
+    fseek(input, 0, SEEK_SET);
 
         //Finding the median
     if(count%2==0)
-    {
-        fseek(input,(count/2), SEEK_SET);
-        median += fscanf(input,"%f",&measurements);
-        median += fscanf(input,"%f",&measurements);
-        median = median/2;
+    {       //If the lines are even, then add the 2 middle values and find the average
+        for(int i = 0; i<((count/2)-1);i++)
+        {
+            fscanf(input,"%f",&measurements);
+        }
+        for(int i =0; i<2;i++)
+        {
+            fscanf(input,"%f",&measurements);
+            median += measurements; 
+        }
+        median = median/2; 
     }
-    else
+    else        //If they are odd, just give the middle value
     {
-        fseek(input,2/*(int)((count/2)+1)*/, SEEK_SET);
-        fscanf(input,"%f",&measurements);
-        median += measurements;
+        for(int i = 0; i<((count/2)+1);i++)
+        {
+            fscanf(input,"%f",&measurements);
+        }
+        median += measurements; 
     }
        
 
